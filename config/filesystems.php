@@ -16,7 +16,10 @@ return [
         // ephemeral container filesystem.
         'public' => [
             'driver' => env('PUBLIC_DISK_DRIVER', 'local'),
-            'root' => storage_path('app/public'),
+            // Laravel uses "root" as the S3 key prefix. Only set it for the
+            // local driver, otherwise uploaded files get a filesystem path
+            // prefix and their public URLs contain the server's local path.
+            'root' => env('PUBLIC_DISK_DRIVER') === 's3' ? '' : storage_path('app/public'),
             'url' => env('AWS_URL') ?: env('APP_URL') . '/storage',
             'visibility' => 'public',
             'throw' => false,
