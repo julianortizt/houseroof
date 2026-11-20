@@ -77,7 +77,20 @@ AWS_USE_PATH_STYLE_ENDPOINT=true
 ```
 
 El bucket debe permitir lectura pública (o servirlo mediante dominio propio /
-CDN).
+CDN). En R2:
+
+1. **Rápido:** bucket → **Settings → Public Access → Allow Access** al
+   subdominio `r2.dev`. La URL resultante (`https://pub-XXXX.r2.dev`) es la
+   que va en `AWS_URL` y funciona de inmediato.
+2. **Producción:** bucket → **Settings → Custom Domains → Connect Custom
+   Domain** (p. ej. `cdn.tudominio.com`). Cloudflare tarda unos minutos en
+   emitir el certificado SSL; hasta que el estado sea **Active**, el dominio
+   dará `ERR_SSL_UNRECOGNIZED_NAME`. No cambies `AWS_URL` hasta entonces.
+
+Si algún día se usa `vercel --prod` en lugar del deploy automático de GitHub,
+borra antes `bootstrap/cache/packages.php` y `bootstrap/cache/services.php`:
+la caché local puede referenciar paquetes de desarrollo (p. ej. Laravel Sail)
+que no existen en el build `--no-dev` del contenedor.
 
 ### Subir las imágenes existentes
 
