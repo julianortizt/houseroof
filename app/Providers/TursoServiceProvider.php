@@ -3,9 +3,9 @@
 namespace App\Providers;
 
 use App\Database\LibSQLHttpConnection;
+use App\Database\LibSQLHttpDatabase;
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Support\ServiceProvider;
-use Turso\Http\Laravel\Database\LibSQLDatabase;
 
 /**
  * Registers the libSQL HTTP connection only when Turso is the configured
@@ -23,7 +23,7 @@ class TursoServiceProvider extends ServiceProvider
                 $config = array_merge(config('database.connections.libsql', []), $config);
                 $config['name'] = $name;
 
-                $database = new LibSQLDatabase($config);
+                $database = new LibSQLHttpDatabase($config);
 
                 return new LibSQLHttpConnection(
                     $database,
