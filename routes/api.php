@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 | API Routes (Mobile App)
 |--------------------------------------------------------------------------
 |
-| Endpoints consumed by the Costa Resin & Construction mobile app (Android/iOS).
+| Endpoints consumed by the House Roof mobile app (Android/iOS).
 | All responses are locale-aware via the "api.locale" middleware
 | (?lang=es|en|de|it|fr|pt|nl or X-Locale header).
 |

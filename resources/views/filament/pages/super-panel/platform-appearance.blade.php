@@ -48,7 +48,7 @@
                                 <span class="block font-medium text-gray-950 dark:text-white">{{ $label }}</span>
                                 <span class="mt-1 block text-sm text-gray-600 dark:text-gray-400">
                                     @switch($key)
-                                        @case('resin_business') Sitúa la instalación de pavimentos de resina, construcción y productos en Málaga y Costa Blanca. @break
+                                        @case('roof') Destaca la limpieza, el mantenimiento y la reparación de techos de House Roof en toda Europa, con equipos locales y materiales certificados. @break
                                         @case('standard') Mantiene el orden actual de las secciones. @break
                                         @case('portfolio') Destaca primero los proyectos de la organización. @break
                                         @case('services') Da prioridad a los servicios y flujos de trabajo. @break

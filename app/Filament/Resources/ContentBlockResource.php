@@ -39,9 +39,9 @@ class ContentBlockResource extends Resource
     protected static function getSectionOptions(?string $page = null): array
     {
         $predefined = [
-            'home' => ['hero' => 'Hero Slider', 'trust_bar' => 'Barra de Confianza', 'value_prop' => 'Propuesta de Valor', 'services_section' => 'Sección de Servicios', 'cta' => 'Call to Action'],
-            'about' => ['hero' => 'Hero', 'story' => 'Nuestra Historia', 'gallery' => 'Galería'],
-            'services' => ['hero' => 'Hero', 'resin' => 'Resina', 'granite' => 'Granite', 'process' => 'Proceso'],
+            'home' => ['roof' => 'Portada House Roof', 'hero' => 'Hero (legado)', 'trust_bar' => 'Barra de Confianza', 'value_proposition' => 'Propuesta de Valor', 'services_section' => 'Sección de Servicios (legado)', 'cta' => 'Call to Action'],
+            'about' => ['hero' => 'Hero', 'story' => 'Nuestra Historia', 'values' => 'Valores', 'gallery' => 'Galería'],
+            'services' => ['hero' => 'Hero', 'resin' => 'Limpieza de techos', 'granite' => 'Reparación de techos', 'process' => 'Proceso'],
             'contact' => ['hero' => 'Hero', 'info' => 'Info'],
             'shop' => ['hero' => 'Hero', 'banner' => 'Banner'],
             'global' => ['header' => 'Header', 'footer' => 'Footer', 'whatsapp' => 'WhatsApp'],

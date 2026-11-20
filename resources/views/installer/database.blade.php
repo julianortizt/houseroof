@@ -23,7 +23,7 @@
         </div>
 
         <label for="db_name">Nombre de la base de datos</label>
-        <input id="db_name" name="db_name" value="{{ $values['db_name'] }}" placeholder="u123456789_costaresin" required>
+        <input id="db_name" name="db_name" value="{{ $values['db_name'] }}" placeholder="u123456789_houseroof" required>
 
         <label for="db_user">Usuario de la base de datos</label>
         <input id="db_user" name="db_user" value="{{ $values['db_user'] }}" placeholder="u123456789_admin" required>

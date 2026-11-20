@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'name' => env('PLATFORM_NAME', 'Costa Resin & Construction'),
-    'public_name' => env('PLATFORM_PUBLIC_NAME', 'Costa Resin & Construction'),
+    'name' => env('PLATFORM_NAME', 'House Roof'),
+    'public_name' => env('PLATFORM_PUBLIC_NAME', 'House Roof'),
     'developer_email' => env('SUPER_ADMIN_EMAIL') ?: 'julianortizt@gmail.com',
     'styles' => [
         'professional' => [
@@ -42,8 +42,9 @@ return [
             'muted' => '#475569',
         ],
     ],
+    'default_home_template' => 'roof',
     'home_templates' => [
-        'resin_business' => 'Costa Resin & Construction · Soluciones de pavimentos',
+        'roof' => 'House Roof · Limpieza, mantenimiento y reparación de techos',
         'standard' => 'Estándar',
         'portfolio' => 'Portafolio primero',
         'services' => 'Servicios primero',

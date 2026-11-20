@@ -23,7 +23,7 @@ class PlatformAppearance extends Page
 
     public string $siteStyle = 'professional';
 
-    public string $homeTemplate = 'resin_business';
+    public string $homeTemplate = 'roof';
 
     public function getTitle(): string
     {
@@ -44,7 +44,7 @@ class PlatformAppearance extends Page
         abort_unless(static::canAccess(), 403);
 
         $this->siteStyle = (string) \App\Models\Setting::get('platform_style', 'professional');
-        $this->homeTemplate = (string) \App\Models\Setting::get('homepage_template', 'resin_business');
+        $this->homeTemplate = (string) \App\Models\Setting::get('homepage_template', config('platform.default_home_template', 'roof'));
     }
 
     public function save(): void

@@ -144,13 +144,13 @@ class PlatformModulesTest extends TestCase
         Setting::query()->whereIn('key', ['seo_description', 'seo_keywords'])->delete();
 
         $descriptions = [
-            'en' => 'Resin flooring installation, construction work and products for projects in Malaga and Costa Blanca. Tell us what you need.',
-            'es' => 'Instalación de pavimentos de resina, trabajos de construcción y venta de productos para proyectos en Málaga y Costa Blanca. Cuéntanos qué necesitas.',
-            'de' => 'Verlegung von Kunstharzböden, Bauarbeiten und Produkte für Projekte in Málaga und an der Costa Blanca. Teilen Sie uns mit, was Sie benötigen.',
-            'fr' => 'Pose de sols en résine, travaux de construction et vente de produits pour vos projets à Málaga et sur la Costa Blanca.',
-            'it' => 'Installazione di pavimenti in resina, lavori di costruzione e vendita di prodotti per progetti a Málaga e sulla Costa Blanca.',
-            'nl' => 'Installatie van kunstharsvloeren, bouwwerkzaamheden en productverkoop voor projecten in Málaga en aan de Costa Blanca.',
-            'pt' => 'Instalação de pavimentos de resina, trabalhos de construção e venda de produtos para projetos em Málaga e na Costa Blanca.',
+            'en' => 'Roof cleaning, maintenance and repair across Europe with local teams and certified materials. Tell us what you need.',
+            'es' => 'Limpieza, mantenimiento y reparación de techos en Europa con equipos locales y materiales certificados. Cuéntanos qué necesitas.',
+            'de' => 'Dachreinigung, -wartung und -reparatur in Europa mit lokalen Teams und zertifizierten Materialien. Teilen Sie uns mit, was Sie benötigen.',
+            'fr' => 'Nettoyage, entretien et réparation des toitures en Europe avec des équipes locales et des matériaux certifiés. Dites-nous ce dont vous avez besoin.',
+            'it' => 'Pulizia, manutenzione e riparazione dei tetti in Europa con team locali e materiali certificati. Dicci cosa ti serve.',
+            'nl' => 'Dakreiniging, -onderhoud en -reparatie in Europa met lokale teams en gecertificeerde materialen. Vertel ons wat u nodig heeft.',
+            'pt' => 'Limpeza, manutenção e reparação de telhados na Europa com equipas locais e materiais certificados. Diga-nos do que precisa.',
         ];
 
         foreach ($descriptions as $locale => $description) {

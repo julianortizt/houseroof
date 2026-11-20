@@ -7,7 +7,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'name' => env('APP_NAME', 'Costa Resin & Construction'),
+    'name' => env('APP_NAME', 'House Roof'),
 
     'env' => env('APP_ENV', 'production'),
     'debug' => (bool) env('APP_DEBUG', false),

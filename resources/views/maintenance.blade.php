@@ -56,7 +56,7 @@
 </head>
 <body>
     <div class="card">
-        <div class="logo">COSTA RESIN & CONSTRUCTION</div>
+        <div class="logo">HOUSE ROOF</div>
         <div class="badge"><span class="pulse"></span> Mantenimiento</div>
         <h1>Estamos trabajando en mejoras</h1>
         <p>{{ $message }}</p>

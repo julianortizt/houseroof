@@ -94,7 +94,7 @@ class InstallerController extends Controller
         $old = session('install.site', []);
 
         $values = [
-            'app_name'      => $old['app_name'] ?? 'Costa Resin & Construction',
+            'app_name'      => $old['app_name'] ?? 'House Roof',
             'app_url'       => $old['app_url'] ?? rtrim((string) url('/'), '/'),
             'admin_email'   => $old['admin_email'] ?? '',
             'admin_password'=> $old['admin_password'] ?? '',

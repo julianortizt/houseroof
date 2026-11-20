@@ -22,23 +22,23 @@
     };
 
     $heroTitle    = $text('hero', 'title', 'Servicios', 'Services');
-    $heroSubtitle = $text('hero', 'subtitle', 'Gestiona proyectos, mediciones y servicios desde un único espacio de trabajo.', 'Manage projects, measurements, and service delivery in one workspace.');
+    $heroSubtitle = $text('hero', 'subtitle', 'Limpieza, mantenimiento y reparación de cubiertas para edificios residenciales, comerciales e industriales en toda Europa.', 'Roof cleaning, maintenance and repair for residential, commercial and industrial buildings across Europe.');
 
-    $resinBadge = $text('resin', 'badge', 'Servicio 1', 'Service 1');
-    $resinTitle = $text('resin', 'title', 'Planificación y medición de proyectos', 'Project planning and measurement');
-    $resinP1    = $text('resin', 'p1', 'Registra los datos del proyecto y las necesidades del cliente desde la primera visita.', 'Capture project details and customer requirements from the first site visit.');
-    $resinP2    = $text('resin', 'p2', 'Organiza las mediciones y la información de cada espacio en un solo lugar.', 'Keep measurements and space details organized in one place.');
+    $resinBadge = $text('resin', 'badge', 'Limpieza de techos', 'Roof cleaning');
+    $resinTitle = $text('resin', 'title', 'Limpieza y mantenimiento de cubiertas', 'Roof cleaning and maintenance');
+    $resinP1    = $text('resin', 'p1', 'Eliminamos musgo, líquenes y suciedad de tejas, pizarra y cubiertas planas con métodos seguros para el material.', 'We remove moss, lichen and dirt from tiles, slate and flat roofs using material-safe methods.');
+    $resinP2    = $text('resin', 'p2', 'Revisamos canalones y bajantes y entregamos un informe fotográfico con el estado de la cubierta.', 'We inspect gutters and downpipes and provide a photographic report on the condition of the roof.');
     $resinContent = $CB::get('services', 'resin', 'content', $locale);
     $resinImage   = $CB::get('services', 'resin', 'image', $locale);
-    $resinAlt     = $text('resin', 'alt', 'Planificación de proyectos', 'Project planning');
+    $resinAlt     = $text('resin', 'alt', 'Limpieza de techos', 'Roof cleaning');
 
-    $graniteBadge = $text('granite', 'badge', 'Servicio 2', 'Service 2');
-    $graniteTitle = $text('granite', 'title', 'Presupuestos y órdenes de trabajo', 'Estimates and work orders');
-    $graniteP1    = $text('granite', 'p1', 'Convierte el alcance del proyecto en un presupuesto claro y reutilizable.', 'Turn project scope into a clear, reusable estimate.');
-    $graniteP2    = $text('granite', 'p2', 'Coordina las tareas y registra el avance hasta completar el trabajo.', 'Coordinate tasks and track progress through completion.');
+    $graniteBadge = $text('granite', 'badge', 'Reparación de techos', 'Roof repair');
+    $graniteTitle = $text('granite', 'title', 'Reparación de goteras e impermeabilización', 'Leak repair and waterproofing');
+    $graniteP1    = $text('granite', 'p1', 'Localizamos el origen de la gotera y reparamos juntas, tejas, chimeneas y limahoyas.', 'We trace the source of the leak and repair joints, tiles, chimneys and valleys.');
+    $graniteP2    = $text('granite', 'p2', 'Aplicamos tratamientos impermeabilizantes compatibles con cada tipo de cubierta y verificamos la estanqueidad.', 'We apply waterproofing treatments compatible with every roof type and verify watertightness.');
     $graniteContent = $CB::get('services', 'granite', 'content', $locale);
     $graniteImage   = $CB::get('services', 'granite', 'image', $locale);
-    $graniteAlt     = $text('granite', 'alt', 'Orden de trabajo', 'Work order');
+    $graniteAlt     = $text('granite', 'alt', 'Reparación de techos', 'Roof repair');
 
     $ctaTitle  = $text('cta', 'title', '¿Hablamos de tu proyecto?', 'Let’s discuss your project');
     $ctaText   = $text('cta', 'text', 'Comparte tus necesidades y nuestro equipo te ayudará a definir los siguientes pasos.', 'Share your requirements and our team will help you define the next steps.');
@@ -51,7 +51,7 @@
 {{-- Hero --}}
 <section class="platform-page-hero">
     <div class="platform-page-hero__inner px-4 sm:px-6 lg:px-8 text-center">
-        <span class="platform-page-kicker">{{ $locale === 'es' ? 'Flujos de trabajo' : 'Workflows' }}</span>
+        <span class="platform-page-kicker">{{ $locale === 'es' ? 'Servicios de techos' : 'Roof services' }}</span>
         <h1 class="platform-page-heading">{!! $heroTitle !!}</h1>
         <p class="platform-page-subtitle">{!! $heroSubtitle !!}</p>
     </div>

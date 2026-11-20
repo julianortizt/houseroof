@@ -104,7 +104,7 @@ class EditContact extends Page implements HasForms
                     ->schema([
                         Forms\Components\TextInput::make('info_address')
                             ->label('Dirección')
-                            ->placeholder('C/ industrial, s/n — 03720 Benissa (Alicante), España')
+                            ->placeholder('Calle de la Industria, s/n - 28001 Madrid, España')
                             ->columnSpanFull(),
                         Forms\Components\Grid::make(2)->schema([
                             Forms\Components\TextInput::make('info_phone')

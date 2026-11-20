@@ -50,7 +50,7 @@ class SimulatorFinishResource extends Resource
                         Forms\Components\Select::make('type')
                             ->label('Tipo')
                             ->options([
-                                'chips' => 'Chips de granito',
+                                'chips' => 'Agregados minerales',
                                 'solid' => 'Sólida',
                                 'metallic' => 'Metálica',
                             ])

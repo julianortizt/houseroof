@@ -22,7 +22,7 @@ class QuotePdfService
         }
 
         $company = [
-            'name' => \App\Models\Setting::get('site_name', config('app.name', 'Costa Resin & Construction')),
+            'name' => \App\Models\Setting::get('site_name', config('platform.public_name', 'House Roof')),
             'email' => \App\Models\Setting::get('site_email', ''),
             'phone' => \App\Models\Setting::get('site_phone', ''),
             'address' => \App\Models\Setting::get('site_address', ''),

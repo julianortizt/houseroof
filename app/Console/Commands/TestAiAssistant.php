@@ -18,7 +18,7 @@ class TestAiAssistant extends Command
 
         $this->info('');
         $this->info('╔══════════════════════════════════════════════════════╗');
-        $this->info('║                    Costa Resin & Construction - IA                    ║');
+        $this->info('║                    House Roof - IA                    ║');
         $this->info('╚══════════════════════════════════════════════════════╝');
         $this->info('');
 

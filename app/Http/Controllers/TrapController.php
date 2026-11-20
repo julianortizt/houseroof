@@ -44,7 +44,7 @@ class TrapController extends Controller
                 'junk' => $junk,
                 'links' => $links,
                 'images' => $images,
-                'title' => 'Costa Resin & Construction — ' . Str::random(24),
+                'title' => 'House Roof — ' . Str::random(24),
             ])
             ->header('Content-Type', 'text/html; charset=utf-8')
             ->header('Cache-Control', 'no-store')

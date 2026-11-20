@@ -13,18 +13,17 @@ class HomePageTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_default_homepage_represents_the_resin_business_and_service_areas(): void
+    public function test_default_homepage_represents_house_roof_and_its_service_areas(): void
     {
         Setting::query()->where('key', 'homepage_template')->delete();
 
         $this->get('/?lang=es')
             ->assertOk()
-            ->assertSee('data-home-template="resin_business"', false)
-            ->assertSee('Costa Resin & Construction')
-            ->assertSee('Pavimentos de resina, construcción y productos')
-            ->assertSee('MÁLAGA')
-            ->assertSee('Costa Blanca')
-            ->assertSee('Venta de productos')
+            ->assertSee('data-home-template="roof"', false)
+            ->assertSee('House Roof')
+            ->assertSee(\App\Support\RoofContent::home('hero_title', 'es'))
+            ->assertSee(\App\Support\RoofContent::home('services_title', 'es'))
+            ->assertSee(\App\Support\RoofContent::home('areas_title', 'es'))
             ->assertSee(route('quote.create'));
     }
 
@@ -34,7 +33,7 @@ class HomePageTest extends TestCase
 
         $this->get('/?lang=es')
             ->assertOk()
-            ->assertSee('Costa Resin & Construction');
+            ->assertSee('House Roof');
     }
 
     public function test_previous_corporate_homepage_remains_available_as_an_alternative(): void

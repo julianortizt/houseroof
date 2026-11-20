@@ -132,7 +132,7 @@ class EditAbout extends Page implements HasForms
                             ->columnSpanFull(),
                         Forms\Components\TextInput::make('hero_subtitle')
                             ->label('Subtítulo')
-                            ->placeholder('Costa Resin & Construction — Fabricante y distribuidor...')
+                            ->placeholder('House Roof — Limpieza, mantenimiento y reparación de techos en Europa...')
                             ->columnSpanFull(),
                     ])->collapsible(),
 
@@ -146,7 +146,7 @@ class EditAbout extends Page implements HasForms
                             ->columnSpanFull(),
                         Forms\Components\RichEditor::make('story_content')
                             ->label('Contenido de la historia')
-                            ->placeholder('Costa Resin & Construction es una empresa especializada en soluciones de resina y pavimentos...')
+                            ->placeholder('House Roof es una empresa especializada en el cuidado de cubiertas en Europa...')
                             ->columnSpanFull(),
                         $this->makeImageUpload('story_image'),
                     ])->collapsible(),
@@ -208,7 +208,7 @@ class EditAbout extends Page implements HasForms
                                 ]),
                                 Forms\Components\TextInput::make('value_3_text')
                                     ->label('Descripción')
-                                    ->placeholder('Nuestro equipo experto instala pavimentos...')
+                                    ->placeholder('Nuestro equipo experto revisa y repara cubiertas...')
                                     ->columnSpanFull(),
                             ])->compact()->collapsible(),
                     ])->collapsible(),

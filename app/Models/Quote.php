@@ -205,7 +205,7 @@ class Quote extends Model
         $lines[] = "🔗 " . __('mapscalculator.whatsapp_view_online', ['url' => url("/cotizacion/{$this->id}")]);
         $lines[] = "";
         $lines[] = "—";
-        $lines[] = config('platform.public_name', 'Costa Resin & Construction');
+        $lines[] = config('platform.public_name', 'House Roof');
 
         return implode("\n", $lines);
     }

@@ -18,7 +18,7 @@ code{background:#eef2f7;padding:.1rem .35rem;border-radius:4px}
 </head>
 <body>
 <header>
-    <strong>Costa Resin &amp; Construction</strong>
+    <strong>House Roof</strong>
     <nav>
         <a href="/tienda">Tienda</a>
         <a href="/servicios">Servicios</a>

@@ -22,21 +22,17 @@
             {{-- Company Info --}}
             <div>
                 <a href="{{ route('home') }}" class="inline-block mb-6">
-                    <img src="{{ asset('images/logo-white.png') }}" alt="{{ config('platform.public_name') }}" class="h-16 w-auto" width="280" height="140">
+                    <img src="{{ \App\Support\SiteLogo::white() }}" alt="{{ config('platform.public_name') }}" class="h-16 w-auto" width="360" height="96">
                 </a>
                 <p class="text-sm leading-relaxed mb-4">
-                    {{ app()->getLocale() === 'es'
-                        ? 'Instalación de pavimentos de resina, construcción y venta de productos para proyectos en Málaga y Costa Blanca.'
-                        : 'Resin flooring installation, construction and product sales for projects in Malaga and Costa Blanca.' }}
+                    {{ \App\Support\RoofContent::text('global', 'footer', 'description', null, 'Servicios profesionales de limpieza, mantenimiento y reparación de techos en toda Europa.') }}
                 </p>
                 <div class="mt-6 flex flex-wrap items-center gap-3">
-                    <span class="flex items-center rounded bg-gray-800 px-2 py-1 text-xs">
-                        <span class="font-semibold">{{ app()->getLocale() === 'es' ? 'RESINA' : 'RESIN' }}</span>
-                        <span class="ml-1">{{ app()->getLocale() === 'es' ? 'Pavimentos' : 'Flooring' }}</span>
+                    <span class="rounded bg-gray-800 px-2 py-1 text-xs font-semibold">
+                        {{ \App\Support\RoofContent::text('global', 'footer', 'badge_1', null, __('Limpieza de techos')) }}
                     </span>
-                    <span class="flex items-center rounded bg-gray-800 px-2 py-1 text-xs">
-                        <span class="font-semibold">{{ app()->getLocale() === 'es' ? 'OBRA' : 'BUILD' }}</span>
-                        <span class="ml-1">{{ app()->getLocale() === 'es' ? 'Construcción' : 'Construction' }}</span>
+                    <span class="rounded bg-gray-800 px-2 py-1 text-xs font-semibold">
+                        {{ \App\Support\RoofContent::text('global', 'footer', 'badge_2', null, __('Reparación de techos')) }}
                     </span>
                 </div>
             </div>

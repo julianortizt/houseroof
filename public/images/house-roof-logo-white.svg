@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 96" role="img" aria-label="House Roof">
+  <title>House Roof</title>
+  <g fill="none" stroke="#fbbf24" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M18 52 54 20l36 32"/>
+    <path d="M30 47v29h48V47"/>
+  </g>
+  <text x="108" y="43" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="800" letter-spacing="1" fill="#ffffff">HOUSE</text>
+  <text x="108" y="78" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="800" letter-spacing="1" fill="#fbbf24">ROOF</text>
+</svg>

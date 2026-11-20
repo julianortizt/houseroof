@@ -159,12 +159,12 @@ class EditServices extends Page implements HasForms
                             ->columnSpanFull(),
                         Forms\Components\TextInput::make('hero_subtitle')
                             ->label('Subtítulo')
-                            ->placeholder('Instalación profesional de pavimentos en resina epóxica y chips de granito en toda España')
+                            ->placeholder('Limpieza, mantenimiento y reparación profesional de techos en toda Europa')
                             ->columnSpanFull(),
                     ])->collapsible(),
 
-                // ── Resin ──
-                Forms\Components\Section::make('🧪 Servicio 1 — Instalación de Resina Epóxica')
+                // ── Roof cleaning (legacy ContentBlock keys kept for compatibility) ──
+                Forms\Components\Section::make('🏠 Servicio 1 — Limpieza y mantenimiento de techos')
                     ->schema([
                         Forms\Components\Grid::make(3)->schema([
                             Forms\Components\TextInput::make('resin_badge')
@@ -172,17 +172,17 @@ class EditServices extends Page implements HasForms
                                 ->default('Servicio 1'),
                             Forms\Components\TextInput::make('resin_title')
                                 ->label('Título del servicio')
-                                ->placeholder('Instalación de Pavimento de Resina Epóxica')
+                                ->placeholder('Limpieza y mantenimiento de cubiertas')
                                 ->columnSpanFull(),
                         ]),
                         Forms\Components\Grid::make(2)->schema([
                             Forms\Components\TextInput::make('resin_p1')
                                 ->label('Párrafo 1')
-                                ->placeholder('Nuestro equipo de profesionales instala pavimentos de resina epóxica...')
+                                ->placeholder('Nuestro equipo de profesionales limpia y revisa cubiertas de todo tipo...')
                                 ->columnSpanFull(),
                             Forms\Components\TextInput::make('resin_p2')
                                 ->label('Párrafo 2')
-                                ->placeholder('Utilizamos resinas de poliuretano y epoxi fabricadas en nuestra planta...')
+                                ->placeholder('Utilizamos materiales certificados y técnicas adaptadas a cada tipo de cubierta...')
                                 ->columnSpanFull(),
                         ]),
                         Forms\Components\RichEditor::make('resin_content')
@@ -193,12 +193,12 @@ class EditServices extends Page implements HasForms
                             $this->makeImageUpload('resin_image'),
                             Forms\Components\TextInput::make('resin_alt')
                                 ->label('Texto alternativo imagen (alt)')
-                                ->placeholder('Instalación de resina epóxica'),
+                                ->placeholder('Limpieza de techos'),
                         ]),
                     ])->collapsible(),
 
-                // ── Granite ──
-                Forms\Components\Section::make('💎 Servicio 2 — Spray Granite / Áridos Decorativos')
+                // ── Roof repair (legacy ContentBlock keys kept for compatibility) ──
+                Forms\Components\Section::make('🛠️ Servicio 2 — Reparación de goteras e impermeabilización')
                     ->schema([
                         Forms\Components\Grid::make(3)->schema([
                             Forms\Components\TextInput::make('granite_badge')
@@ -206,13 +206,13 @@ class EditServices extends Page implements HasForms
                                 ->default('Servicio 2'),
                             Forms\Components\TextInput::make('granite_title')
                                 ->label('Título del servicio')
-                                ->placeholder('Spray Granite / Áridos Decorativos')
+                                ->placeholder('Reparación de goteras e impermeabilización')
                                 ->columnSpanFull(),
                         ]),
                         Forms\Components\Grid::make(2)->schema([
                             Forms\Components\TextInput::make('granite_p1')
                                 ->label('Párrafo 1')
-                                ->placeholder('Tecnología de pulverización de chips de granito...')
+                                ->placeholder('Revisión y reparación de juntas, goteras y impermeabilización...')
                                 ->columnSpanFull(),
                             Forms\Components\TextInput::make('granite_p2')
                                 ->label('Párrafo 2')
@@ -227,7 +227,7 @@ class EditServices extends Page implements HasForms
                             $this->makeImageUpload('granite_image'),
                             Forms\Components\TextInput::make('granite_alt')
                                 ->label('Texto alternativo imagen (alt)')
-                                ->placeholder('Chips de granito'),
+                                ->placeholder('Reparación de techos'),
                         ]),
                     ])->collapsible(),
 

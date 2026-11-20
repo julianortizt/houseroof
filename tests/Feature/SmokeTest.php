@@ -19,20 +19,24 @@ class SmokeTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_homepage_uses_slider_settings(): void
+    public function test_homepage_renders_editable_house_roof_content_and_logo(): void
     {
         Storage::fake('public');
-        Storage::disk('public')->put('site/slides/example.jpg', 'image');
-        Setting::set('homepage_template', 'services');
-        Setting::set('slide_1_title', 'Panel slider title');
-        Setting::set('slide_1_image', 'site/slides/example.jpg', 'image');
-        ContentBlock::set('home', 'cta', 'title', 'Database CTA title', 'text', 'en');
+        Storage::disk('public')->put('site/logo/test-logo.svg', '<svg></svg>');
+        Storage::disk('public')->put('site/hero/example.jpg', 'image');
 
-        $response = $this->get('/');
+        // Legacy template values must still render the House Roof homepage.
+        Setting::set('homepage_template', 'services');
+        Setting::set('logo_path', 'site/logo/test-logo.svg', 'image');
+        ContentBlock::set('home', 'roof', 'hero_title', 'Panel hero title', 'text', 'en');
+        ContentBlock::set('home', 'roof', 'hero_image', 'site/hero/example.jpg', 'image', 'en');
+
+        $response = $this->get('/?lang=en');
 
         $response->assertOk()
-            ->assertSee('Panel slider title')
-            ->assertSee('Database CTA title')
-            ->assertSee('example.jpg', false);
+            ->assertSee('Panel hero title')
+            ->assertSee('example.jpg', false)
+            ->assertSee('test-logo.svg', false)
+            ->assertDontSee('Costa Resin');
     }
 }

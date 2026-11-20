@@ -5,11 +5,13 @@
         $siteStyle = 'professional';
     }
     $stylePalette = $styleOptions[$siteStyle];
+    $siteFavicon = \App\Support\SiteLogo::favicon();
 
+    $defaultHomeTemplate = config('platform.default_home_template', 'roof');
     $homeTemplates = config('platform.home_templates');
-    $homeTemplate = (string) \App\Models\Setting::get('homepage_template', 'resin_business');
+    $homeTemplate = (string) \App\Models\Setting::get('homepage_template', $defaultHomeTemplate);
     if (! array_key_exists($homeTemplate, $homeTemplates)) {
-        $homeTemplate = 'resin_business';
+        $homeTemplate = $defaultHomeTemplate;
     }
 @endphp
 <!DOCTYPE html>
@@ -17,6 +19,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    @if($siteFavicon)<link rel="icon" type="image/png" href="{{ $siteFavicon }}">@endif
     @php
         $antiCloneEnabled = (bool) config('antidown.guard_enabled', true);
         $antiCloneHosts = config('antidown.allowed_hosts', []);
@@ -36,7 +39,7 @@
         if (!ok) {
             var render = function () {
                 if (!document.body) { return; }
-                document.body.innerHTML = '<main style="font-family:system-ui,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#0f172a;color:#fff;text-align:center;padding:1rem"><div><h1 style="font-size:1.5rem;margin-bottom:.75rem">Copia no autorizada · Unauthorized copy</h1><p style="color:#f59e0b;font-weight:700">Costa Resin &amp; Construction</p><p style="margin:.5rem 0">Este sitio es una copia no autorizada del original.<br>This website is an unauthorized copy of the original.</p><p style="font-size:.875rem;color:#94a3b8">El contenido es propiedad intelectual del titular.</p></div></main>';
+                document.body.innerHTML = '<main style="font-family:system-ui,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#0f172a;color:#fff;text-align:center;padding:1rem"><div><h1 style="font-size:1.5rem;margin-bottom:.75rem">Copia no autorizada · Unauthorized copy</h1><p style="color:#f59e0b;font-weight:700">House Roof</p><p style="margin:.5rem 0">Este sitio es una copia no autorizada del original.<br>This website is an unauthorized copy of the original.</p><p style="font-size:.875rem;color:#94a3b8">El contenido es propiedad intelectual del titular.</p></div></main>';
             };
             document.addEventListener('DOMContentLoaded', render);
             if (document.body) { render(); }

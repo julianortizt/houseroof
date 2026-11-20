@@ -7,7 +7,7 @@
         <div class="flex items-center justify-between h-16 lg:h-20">
 
             <a href="{{ route('home') }}" class="flex-shrink-0 mr-8 flex items-center">
-                <img src="{{ asset('images/logo.png') }}" alt="{{ config('platform.public_name') }}" class="h-12 lg:h-16 w-auto" width="320" height="160">
+                <img src="{{ \App\Support\SiteLogo::main() }}" alt="{{ config('platform.public_name') }}" class="h-12 lg:h-16 w-auto" width="360" height="96">
             </a>
 
             {{-- Desktop Navigation --}}
@@ -108,7 +108,7 @@
 
                 <a href="{{ route('about') }}"
                    class="text-sm font-medium {{ request()->routeIs('about') ? 'text-amber-600' : 'text-gray-700 hover:text-amber-600' }} transition-colors whitespace-nowrap">
-                    {{ __('About Us') }}
+                    {{ __('Empresa') }}
                 </a>
 
                 <a href="{{ route('contact') }}"
@@ -202,7 +202,7 @@
             <a href="{{ route('services') }}" class="block py-2 text-gray-700 hover:text-amber-600 font-semibold">{{ __('Servicios') }}</a>
             <a href="{{ route('projects.index') }}" class="block py-2 text-gray-700 hover:text-amber-600 font-semibold">{{ __('Proyectos') }}</a>
             <a href="{{ route('blog.index') }}" class="block py-2 text-gray-700 hover:text-amber-600 font-semibold">{{ __('Blog') }}</a>
-            <a href="{{ route('about') }}" class="block py-2 text-gray-700 hover:text-amber-600 font-semibold">{{ __('About Us') }}</a>
+            <a href="{{ route('about') }}" class="block py-2 text-gray-700 hover:text-amber-600 font-semibold">{{ __('Empresa') }}</a>
             <a href="{{ route('contact') }}" class="block py-2 text-gray-700 hover:text-amber-600 font-semibold">{{ __('Contacto') }}</a>
             @if(app(\App\Services\PlatformModules::class)->enabled('customer_portal'))
                 <a href="{{ auth('customer')->check() ? route('customer.portal') : route('customer.login') }}" class="block py-2 text-amber-700 hover:text-amber-800 font-semibold">

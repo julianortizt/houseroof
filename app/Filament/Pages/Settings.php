@@ -42,17 +42,20 @@ class Settings extends Page implements HasForms
     {
         $this->form->fill([
             // General
-            'site_name' => Setting::get('site_name', 'Costa Resin & Construction'),
-            'site_tagline' => Setting::get('site_tagline', 'Soluciones de resinas y pavimentos'),
-            'site_email' => Setting::get('site_email', 'hello@TU_DOMINIO.com'),
+            'site_name' => Setting::get('site_name', 'House Roof'),
+            'site_tagline' => Setting::get('site_tagline', 'Limpieza, mantenimiento y reparación de techos en Europa'),
+            'site_email' => Setting::get('site_email', 'hello@houseroof.com'),
             'site_phone' => Setting::get('site_phone', '+34 900 000 000'),
-            'site_whatsapp' => Setting::get('site_whatsapp', '+34600000000'),
+            'site_whatsapp' => Setting::get('site_whatsapp', '+34900000000'),
             'site_address' => Setting::get('site_address', 'Calle Principal 123, 28001 Madrid, España'),
 
             // Logo
-            'logo_path' => $this->toFileUrl(Setting::get('logo_path', 'images/logo.png')),
-            'logo_white_path' => $this->toFileUrl(Setting::get('logo_white_path', 'images/logo-white.png')),
+            'logo_path' => $this->toFileUrl(Setting::get('logo_path', 'images/house-roof-logo.svg')),
+            'logo_white_path' => $this->toFileUrl(Setting::get('logo_white_path', 'images/house-roof-logo-white.svg')),
             'favicon_path' => $this->toFileUrl(Setting::get('favicon_path', 'images/favicon.png')),
+
+            // Hero video
+            'hero_playback_rate' => Setting::get('hero_playback_rate', '0.625'),
 
             // Slider
             'slider_enabled' => Setting::get('slider_enabled', '1'),
@@ -100,8 +103,8 @@ class Settings extends Page implements HasForms
             'ai_welcome_message' => Setting::get('ai_welcome_message', 'Hola, soy tu asistente virtual. ¿En qué puedo ayudarte?'),
 
             // Footer
-            'footer_company' => Setting::get('footer_company', 'Costa Resin & Construction'),
-            'footer_copyright' => Setting::get('footer_copyright', '© ' . date('Y') . ' Costa Resin & Construction. Todos los derechos reservados.'),
+            'footer_company' => Setting::get('footer_company', 'House Roof'),
+            'footer_copyright' => Setting::get('footer_copyright', '© ' . date('Y') . ' House Roof. Todos los derechos reservados.'),
         ]);
     }
 
@@ -124,8 +127,11 @@ class Settings extends Page implements HasForms
     }
 
     /**
-     * Convert a stored file path to a full URL for Filament FileUpload.
-     * FileUpload needs a URL to generate previews, not a relative path.
+     * Convert a stored path into the state expected by Filament FileUpload.
+     *
+     * FileUpload stores paths relative to its disk and checks existence with
+     * `$disk->exists($path)`. Passing a full URL here was the reason existing
+     * images never appeared and appeared to be erased on save.
      */
     protected function toFileUrl(?string $path): ?string
     {
@@ -133,23 +139,18 @@ class Settings extends Page implements HasForms
             return null;
         }
 
-        // Already a full URL
+        // Normalise absolute URLs and legacy /storage/ paths first.
         if (str_starts_with($path, 'http')) {
-            return $path;
+            $path = $this->toStoragePath($path);
+        } elseif (str_starts_with($path, '/storage/')) {
+            $path = ltrim(substr($path, strlen('/storage/')), '/');
         }
 
-        // Already a storage-relative URL
-        if (str_starts_with($path, '/storage/')) {
-            return $path;
+        try {
+            return \Illuminate\Support\Facades\Storage::disk('public')->exists($path) ? $path : null;
+        } catch (\Throwable) {
+            return null;
         }
-
-        // Check if file exists on the configured uploads disk (local or S3)
-        if (\Illuminate\Support\Facades\Storage::disk('public')->exists($path)) {
-            return upload_url($path);
-        }
-
-        // Fallback: try as-is (e.g. images/logo.png in public/)
-        return asset($path);
     }
 
     /**
@@ -180,6 +181,9 @@ class Settings extends Page implements HasForms
             $path = parse_url($value, PHP_URL_PATH);
             if ($path && str_starts_with($path, '/storage/')) {
                 return ltrim(substr($path, strlen('/storage/')), '/');
+            }
+            if ($path && str_starts_with($path, '/images/')) {
+                return ltrim($path, '/');
             }
             return $value;
         }
@@ -316,12 +320,12 @@ class Settings extends Page implements HasForms
                         Grid::make(1)->schema([
                             Forms\Components\TextInput::make('seo_title')
                                 ->label(__('admin.Meta Title'))
-                                ->placeholder(__('admin.Costa Resin & Construction - Soluciones de pavimentos'))
+                                ->placeholder(__('admin.House Roof - Limpieza y reparación de techos'))
                                 ->helperText(__('admin.Título que aparece en Google. Max 60 caracteres.')),
                             Forms\Components\Textarea::make('seo_description')
                                 ->label(__('admin.Meta Description'))
                                 ->rows(3)
-                                ->placeholder(__('admin.Fabricante y distribuidor de resinas de poliuretano en España...'))
+                                ->placeholder(__('admin.Empresa europea de limpieza, mantenimiento y reparación de techos...'))
                                 ->helperText(__('admin.Descripción que aparece en Google. Max 160 caracteres.')),
                             Forms\Components\FileUpload::make('seo_og_image')
                                 ->label(__('admin.Imagen Open Graph (para redes sociales)'))
@@ -333,7 +337,7 @@ class Settings extends Page implements HasForms
                             Forms\Components\Textarea::make('seo_keywords')
                                 ->label('Meta Keywords')
                                 ->rows(3)
-                                ->placeholder('resinas epoxicas, chips de granito, pavimentos decorativos, Benissa')
+                                ->placeholder('limpieza de techos, mantenimiento de cubiertas, reparación de goteras, Europa')
                                 ->helperText('Palabras clave separadas por comas. Puedes incluir español e inglés.'),
                         ]),
                     ]),
@@ -358,15 +362,15 @@ class Settings extends Page implements HasForms
                             Forms\Components\TextInput::make('social_linkedin')
                                 ->label(__('admin.LinkedIn'))
                                 ->url()
-                                ->placeholder(__('admin.https://www.linkedin.com/company/costaresinconstruction')),
+                                ->placeholder(__('admin.https://www.linkedin.com/company/house-roof')),
                             Forms\Components\TextInput::make('social_tiktok')
                                 ->label(__('admin.TikTok'))
                                 ->url()
-                                ->placeholder(__('admin.https://www.tiktok.com/@costaresinconstruction')),
+                                ->placeholder(__('admin.https://www.tiktok.com/@houseroof')),
                             Forms\Components\TextInput::make('social_twitter')
                                 ->label(__('admin.X / Twitter'))
                                 ->url()
-                                ->placeholder(__('admin.https://x.com/costaresinconstruction')),
+                                ->placeholder(__('admin.https://x.com/house_roof')),
                         ]),
                     ]),
 

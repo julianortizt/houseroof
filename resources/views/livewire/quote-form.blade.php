@@ -57,8 +57,8 @@
             <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('Tipo de servicio') }} *</label>
             <select wire:model="service_type"
                     class="w-full border-gray-300 rounded-lg shadow-sm focus:border-amber-500 focus:ring-amber-500 @error('service_type') border-red-500 @enderror">
-                <option value="resin">{{ app()->getLocale() === 'es' ? 'Planificación y medición de proyecto' : 'Project planning and measurement' }}</option>
-                <option value="granite">{{ app()->getLocale() === 'es' ? 'Ejecución del trabajo o servicio' : 'Work execution or service delivery' }}</option>
+                <option value="resin">{{ app()->getLocale() === 'es' ? 'Limpieza de techos' : 'Roof cleaning' }}</option>
+                <option value="granite">{{ app()->getLocale() === 'es' ? 'Reparación de techos' : 'Roof repair' }}</option>
                 <option value="other">{{ __('Otro servicio') }}</option>
             </select>
             @error('service_type') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror

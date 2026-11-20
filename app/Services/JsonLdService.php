@@ -19,15 +19,21 @@ class JsonLdService
             '@type' => 'Organization',
             'name' => config('platform.public_name'),
             'url' => config('app.url'),
-            'description' => 'Instalación de pavimentos de resina, trabajos de construcción y venta de productos para proyectos en Málaga y Costa Blanca.',
+            'description' => 'Limpieza, mantenimiento y reparación de techos en Europa, con inspección técnica, impermeabilización y urgencias.',
             'areaServed' => [
-                ['@type' => 'AdministrativeArea', 'name' => 'Málaga'],
-                ['@type' => 'Place', 'name' => 'Costa Blanca'],
+                ['@type' => 'Place', 'name' => 'Europa'],
+                ['@type' => 'Country', 'name' => 'España'],
+                ['@type' => 'Country', 'name' => 'Alemania'],
+                ['@type' => 'Country', 'name' => 'Francia'],
+                ['@type' => 'Country', 'name' => 'Italia'],
+                ['@type' => 'Country', 'name' => 'Portugal'],
+                ['@type' => 'Country', 'name' => 'Países Bajos'],
             ],
             'knowsAbout' => [
-                'Instalación de pavimentos de resina',
-                'Construcción y reforma',
-                'Productos para pavimentos y construcción',
+                'Limpieza de techos',
+                'Mantenimiento de cubiertas',
+                'Reparación de goteras',
+                'Impermeabilización de techos',
             ],
         ];
 
@@ -94,13 +100,13 @@ class JsonLdService
             'mpn' => $product->sku ?? $product->slug,
             'brand' => [
                 '@type' => 'Brand',
-                'name' => 'Costa Resin & Construction',
+                'name' => config('platform.public_name'),
             ],
             'manufacturer' => [
                 '@type' => 'Organization',
-                'name' => 'Costa Resin & Construction',
+                'name' => config('platform.public_name'),
             ],
-            'category' => $product->category->name ?? 'Pavimentos decorativos',
+            'category' => $product->category->name ?? 'Materiales para techos',
             'url' => route('shop.show', $product->slug),
             'image' => $product->getFirstMediaUrl('default', 'large') ?: config('app.url') . '/storage/site/placeholder.jpg',
             'offers' => [
@@ -115,7 +121,7 @@ class JsonLdService
                     : 'https://schema.org/OutOfStock',
                 'seller' => [
                     '@type' => 'Organization',
-                    'name' => 'Costa Resin & Construction',
+                    'name' => config('platform.public_name'),
                 ],
                 'shippingDetails' => [
                     '@type' => 'OfferShippingDetails',
@@ -271,8 +277,8 @@ class JsonLdService
             'name' => config('platform.public_name'),
             'url' => config('app.url'),
             'areaServed' => [
-                ['@type' => 'AdministrativeArea', 'name' => 'Málaga'],
-                ['@type' => 'Place', 'name' => 'Costa Blanca'],
+                ['@type' => 'Place', 'name' => 'Europa'],
+                ['@type' => 'Country', 'name' => 'España'],
             ],
         ];
 
@@ -291,33 +297,37 @@ class JsonLdService
     }
 
     /**
-     * Generate Service schema for the company's resin & granite chip pavement services.
+     * Generate Service schema for the roof cleaning and repair services.
      */
     public function service(): array
     {
         return [
             '@context' => 'https://schema.org',
             '@type' => 'Service',
-            'name' => 'Instalación de pavimentos de resina, construcción y venta de productos',
-            'serviceType' => 'Pavimentos de resina y construcción',
-            'description' => 'Instalación de pavimentos de resina, trabajos de construcción y venta de productos para proyectos en Málaga y Costa Blanca.',
+            'name' => 'Limpieza, mantenimiento y reparación de techos',
+            'serviceType' => 'Servicios de cubiertas',
+            'description' => 'Limpieza, mantenimiento, inspección, impermeabilización y reparación de techos en Europa.',
             'provider' => [
                 '@type' => 'LocalBusiness',
                 'name' => config('platform.public_name'),
                 'url' => config('app.url'),
             ],
             'areaServed' => [
-                ['@type' => 'AdministrativeArea', 'name' => 'Málaga'],
-                ['@type' => 'Place', 'name' => 'Costa Blanca'],
+                ['@type' => 'Place', 'name' => 'Europa'],
+                ['@type' => 'Country', 'name' => 'España'],
+                ['@type' => 'Country', 'name' => 'Alemania'],
+                ['@type' => 'Country', 'name' => 'Francia'],
+                ['@type' => 'Country', 'name' => 'Italia'],
             ],
             'url' => config('app.url') . '/servicios',
             'hasOfferCatalog' => [
                 '@type' => 'OfferCatalog',
-                'name' => 'Servicios de pavimentos y construcción',
+                'name' => 'Servicios de techos',
                 'itemListElement' => [
-                    ['@type' => 'Offer', 'itemOffered' => ['@type' => 'Service', 'name' => 'Instalación de pavimentos de resina']],
-                    ['@type' => 'Offer', 'itemOffered' => ['@type' => 'Service', 'name' => 'Trabajos de construcción y reforma']],
-                    ['@type' => 'Offer', 'itemOffered' => ['@type' => 'Service', 'name' => 'Venta de productos para pavimentos y construcción']],
+                    ['@type' => 'Offer', 'itemOffered' => ['@type' => 'Service', 'name' => 'Limpieza de techos']],
+                    ['@type' => 'Offer', 'itemOffered' => ['@type' => 'Service', 'name' => 'Mantenimiento preventivo de cubiertas']],
+                    ['@type' => 'Offer', 'itemOffered' => ['@type' => 'Service', 'name' => 'Reparación de goteras y cubiertas']],
+                    ['@type' => 'Offer', 'itemOffered' => ['@type' => 'Service', 'name' => 'Inspección técnica de techos']],
                 ],
             ],
         ];

@@ -53,7 +53,7 @@ class TranslationService
         }
         $targetDesc = implode(', ', $parts);
 
-        $system = "You are a professional translator for a company that sells decorative resin flooring, epoxy, and granite chip systems. Translate accurately, preserve industry terminology, tone and any HTML tags exactly. Never add commentary.";
+        $system = "You are a professional translator for a roof cleaning, maintenance and repair company operating across Europe. Translate accurately, preserve roofing terminology, tone and any HTML tags exactly. Never add commentary.";
         $user = "Translate the following text from {$fromName} to each of these languages: {$targetDesc}.\nReturn ONLY a JSON object (no markdown), where each key is the language code and the value is the translation.\n\nTEXT:\n{$text}";
 
         $raw = $this->callLlm($system, $user, $model, $key, $provider, 2000);
@@ -115,7 +115,7 @@ class TranslationService
         foreach ($chunks as $chunk) {
             $fromName = $this->localeName($from);
             $targetDesc = implode(', ', array_map(fn ($t) => "{$t} ({$this->localeName($t)})", $targets));
-            $system = 'You are a professional translator for a company that sells decorative resin flooring, epoxy, and granite chip systems. Translate accurately, preserve industry terminology, tone and any HTML tags exactly. Never add commentary.';
+            $system = 'You are a professional translator for a roof cleaning, maintenance and repair company operating across Europe. Translate accurately, preserve roofing terminology, tone and any HTML tags exactly. Never add commentary.';
             $user = "Translate each text from {$fromName} to each language: {$targetDesc}.\n"
                 .'Return ONLY a JSON object (no markdown): top-level keys are the given text ids, each value is an object keyed by language code.\n\nTEXTS:'
                 ."\n".json_encode($chunk, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);

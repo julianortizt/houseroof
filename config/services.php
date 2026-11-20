@@ -72,7 +72,7 @@ return [
     'bank' => [
         'name' => env('BANK_NAME', 'Tu Banco'),
         'iban' => env('BANK_IBAN', 'ES00 0000 0000 0000 0000 0000'),
-        'holder' => env('BANK_HOLDER', 'Costa Resin & Construction'),
+        'holder' => env('BANK_HOLDER', 'House Roof'),
     ],
 
     'bizum' => [

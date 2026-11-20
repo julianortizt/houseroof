@@ -3,7 +3,7 @@
 @section('meta_description', __('meta_shop_desc'))
 @section('meta_keywords', __('meta_shop_kw'))
 @section('title', __('Tienda'))
-@section('meta_description', __('Catálogo de productos: resinas, aglutinantes, kits y herramientas para pavimentos decorativos'))
+@section('meta_description', __('Productos y materiales para limpieza, mantenimiento y reparación de techos'))
 
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

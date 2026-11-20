@@ -15,15 +15,23 @@ class HomeController extends Controller
 {
     public function __invoke(PlatformModules $modules)
     {
-        $homeTemplate = Setting::get('homepage_template', 'resin_business');
+        $defaultTemplate = config('platform.default_home_template', 'roof');
+        $homeTemplate = Setting::get('homepage_template', $defaultTemplate);
 
-        if ($homeTemplate === 'resin_business') {
-            return view('pages.home-resin-business');
+        // Old installations may still store the previous template key. Serve
+        // the new roof homepage instead of the retired resin landing page.
+        if (! array_key_exists($homeTemplate, config('platform.home_templates', []))) {
+            $homeTemplate = $defaultTemplate;
         }
 
-        if ($homeTemplate === 'corporate') {
-            return view('pages.home-corporate');
+        // Every standard layout now renders the House Roof homepage. The
+        // template choice remains available for styling/ordered sections, but
+        // the retired resin landing page is never served again.
+        if ($homeTemplate !== 'corporate') {
+            return view('pages.home-roof');
         }
+
+        return view('pages.home-corporate');
 
         // Cache homepage data for 5 minutes — reduces DB load significantly
         // Cache is automatically flushed when products/projects/posts are updated

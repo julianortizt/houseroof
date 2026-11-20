@@ -727,7 +727,7 @@ function simulator() {
         })
         .catch(()=>{this.leadSubmitting=false;this.leadError='Sin conexión. Inténtalo de nuevo o escríbenos por WhatsApp.';});
     },
-    _doDownload(){const w=this.showOriginal;this.showOriginal=false;this.render();const l=document.createElement('a');l.download='costa-resin-simulacion.jpg';l.href=this.$refs.mainCanvas.toDataURL('image/jpeg',0.95);l.click();this.showOriginal=w;this.render();},
+    _doDownload(){const w=this.showOriginal;this.showOriginal=false;this.render();const l=document.createElement('a');l.download='houseroof-simulacion.jpg';l.href=this.$refs.mainCanvas.toDataURL('image/jpeg',0.95);l.click();this.showOriginal=w;this.render();},
     drawAllSwatches(){this.catalog.forEach(sw=>{const el=document.getElementById('sw-'+sw.id);if(!el)return;const ctx=el.getContext('2d');el.width=240;el.height=170;const productImg=this.imageCache[sw.id];if(productImg){ctx.fillStyle=sw.base||'#888888';ctx.fillRect(0,0,240,170);const iw=productImg.naturalWidth||productImg.width||1;const ih=productImg.naturalHeight||productImg.height||1;const scale=Math.max(240/iw,170/ih);const dw=iw*scale,dh=ih*scale;ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';ctx.drawImage(productImg,(240-dw)/2,(170-dh)/2,dw,dh);}else{ctx.drawImage(this.generateTexture(sw,240),0,0,240,170);}});},
   };
 }
