@@ -65,7 +65,7 @@
             if (\Illuminate\Support\Str::startsWith($rawOg, ['http', '/storage/'])) {
                 $ogImageFallback = $rawOg;
             } else {
-                $ogImageFallback = \Illuminate\Support\Facades\Storage::disk('public')->exists($rawOg) ? upload_url($rawOg) : asset($rawOg);
+                $ogImageFallback = upload_disk()->exists($rawOg) ? upload_url($rawOg) : asset($rawOg);
             }
         } else {
             $ogImageFallback = upload_url('site/og-default.jpg');

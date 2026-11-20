@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Storage;
 
 class ContentBlock extends Model
 {
@@ -108,7 +107,7 @@ class ContentBlock extends Model
         }
 
         // If it's a storage path
-        if (Storage::disk('public')->exists($value)) {
+        if (upload_disk()->exists($value)) {
             return asset('storage/' . $value);
         }
 
@@ -138,7 +137,7 @@ class ContentBlock extends Model
         }
 
         // Local video file
-        if (Storage::disk('public')->exists($value)) {
+        if (upload_disk()->exists($value)) {
             return asset('storage/' . $value);
         }
 

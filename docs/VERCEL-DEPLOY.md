@@ -91,18 +91,32 @@ aws s3 sync storage/app/public s3://TU_BUCKET \
 
 ---
 
-## 4. Migraciones (paso separado)
+## 4. Migraciones y seeders (paso separado)
 
 Las migraciones **no** se ejecutan al arrancar el contenedor. Hazlo una vez
-después de crear la BD:
+después de crear la BD. `vercel env pull` deja vacías las variables sensibles
+añadidas por CLI; rellena `APP_KEY`, `DB_CONNECTION`, `CACHE_STORE`, etc.
+antes de ejecutar estos comandos con PHP 8.4:
 
 ```bat
-copy .env .env.backup
-vercel env pull .env --environment=production
-dev.bat :: en otra terminal, o directamente:
-"C:\Users\Julian\AppData\Local\Microsoft\WinGet\Packages\PHP.PHP.8.4_Microsoft.Winget.Source_8wekyb3d8bbwe\php.exe" artisan migrate --force
-copy .env.backup .env
+php artisan migrate --force
+php artisan db:seed --class=RolesAndPermissionsSeeder --force
+
+# Un proceso por cuenta (PowerShell)
+$env:HOUSE_ROOF_ADMIN_ONLY='admin@houseroof.com';    php artisan db:seed --class=HouseRoofAdminSeeder --force
+$env:HOUSE_ROOF_ADMIN_ONLY='dev@houseroof.com';      php artisan db:seed --class=HouseRoofAdminSeeder --force
+$env:HOUSE_ROOF_ADMIN_ONLY='manager@houseroof.com';  php artisan db:seed --class=HouseRoofAdminSeeder --force
+$env:HOUSE_ROOF_ADMIN_ONLY='siteadmin@houseroof.com'; php artisan db:seed --class=HouseRoofAdminSeeder --force
+
+php artisan db:seed --class=PageSeeder --force
+php artisan db:seed --class=SettingsSeeder --force
+php artisan db:seed --class=ContentBlockSeeder --force
 ```
+
+> Cada admin se siembra en un proceso aparte porque el driver FFI de libSQL
+> puede fallar al encadenar varios `syncRoles`. Las credenciales iniciales
+> están en `docs/CREDENCIALES.md` (ignorado por Git) y deben cambiarse tras
+> el primer login.
 
 Tras esto, las tablas `sessions` y `cache` existen en Turso y el login del
 panel funciona entre instancias.
@@ -113,6 +127,9 @@ panel funciona entre instancias.
 ---
 
 ## 5. Despliegue
+
+El proyecto está conectado a GitHub; cada push a `main` crea un despliegue
+de producción automáticamente. También puedes lanzarlo a mano:
 
 ```bash
 vercel --prod
@@ -132,8 +149,11 @@ aplicación.
 
 ## 6. Repositorio Git
 
-Vercel despliega desde GitHub/GitLab/Bitbucket. Esta carpeta aún no tenía
-repo Git; ya está inicializada y lista para el primer commit.
+Vercel despliega desde GitHub. Repositorio:
+`https://github.com/julianortizt/houseroof` (rama `main`).
+
+No versionar `php.ini` con rutas de Windows: se copiaba al contenedor y
+desactivaba la extensión FFI necesaria para libSQL/Turso.
 
 ---
 

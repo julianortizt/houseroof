@@ -1,6 +1,46 @@
 <?php
 
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
+
+if (! function_exists('uploads_configured')) {
+    /**
+     * Whether the public disk can safely resolve the S3 adapter. Until the
+     * R2/AWS variables exist, public pages must not instantiate that adapter.
+     */
+    function uploads_configured(): bool
+    {
+        $disk = config('filesystems.disks.public', []);
+
+        if (($disk['driver'] ?? 'local') !== 's3') {
+            return false;
+        }
+
+        return filled($disk['key'] ?? null)
+            && filled($disk['secret'] ?? null)
+            && filled($disk['bucket'] ?? null);
+    }
+}
+
+if (! function_exists('upload_disk')) {
+    /** Disk used for public reads: S3 when configured, bundled local files otherwise. */
+    function upload_disk(): Filesystem
+    {
+        $disk = config('filesystems.disks.public', []);
+
+        if (($disk['driver'] ?? null) === 's3' && ! uploads_configured()) {
+            config([
+                'filesystems.disks.public.driver' => 'local',
+                'filesystems.disks.public.root' => storage_path('app/public'),
+                'filesystems.disks.public.url' => env('APP_URL') . '/storage',
+                'filesystems.disks.public.visibility' => 'public',
+            ]);
+            Storage::purge('public');
+        }
+
+        return Storage::disk('public');
+    }
+}
 
 if (! function_exists('upload_url')) {
     /**
@@ -24,7 +64,7 @@ if (! function_exists('upload_url')) {
             $path = substr($path, strlen('/storage/'));
         }
 
-        $url = Storage::disk('public')->url(ltrim($path, '/'));
+        $url = upload_disk()->url(ltrim($path, '/'));
 
         return str_starts_with($url, 'http') ? $url : url($url);
     }
@@ -41,7 +81,7 @@ if (! function_exists('upload_local_path')) {
             return null;
         }
 
-        $disk = Storage::disk('public');
+        $disk = upload_disk();
 
         if (! $disk->exists($path)) {
             return null;

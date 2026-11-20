@@ -3,7 +3,6 @@
 namespace App\Support;
 
 use App\Models\Setting;
-use Illuminate\Support\Facades\Storage;
 
 /**
  * Resolves the brand assets configured in the admin panel.
@@ -57,7 +56,7 @@ class SiteLogo
         }
 
         try {
-            return Storage::disk('public')->exists($path);
+            return upload_disk()->exists($path);
         } catch (\Throwable) {
             return false;
         }
