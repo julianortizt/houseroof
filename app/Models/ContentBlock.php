@@ -9,47 +9,94 @@ class ContentBlock extends Model
 {
     protected $guarded = [];
 
+    /** All blocks for the current request, keyed by page/section/key/locale. */
+    private static ?array $allBlocks = null;
+
+    private static ?int $snapshotRequest = null;
+
     /**
      * Get a content block value by page, section, key and locale.
-     * Uses cache for performance.
+     *
+     * Blocks are loaded once per request from a single cached collection. With
+     * the HTTP libSQL driver one query per block would be too slow on the
+     * homepage (hundreds of round trips to Turso).
      */
     public static function get(string $page, string $section, string $key, ?string $locale = null, mixed $default = null, bool $fallback = true): mixed
     {
         $locale = $locale ?? app()->getLocale();
-        $cacheKey = "content_block:{$page}:{$section}:{$key}:{$locale}:" . ($fallback ? '1' : '0');
+        $blocks = static::allBlocks();
 
-        return Cache::remember($cacheKey, 3600, function () use ($page, $section, $key, $locale, $default, $fallback) {
-            $block = static::where('page', $page)
-                ->where('section', $section)
-                ->where('key', $key)
-                ->where('locale', $locale)
-                ->first();
+        $block = $blocks[static::cacheKey($page, $section, $key, $locale)] ?? null;
 
-            // Fallback to the configured fallback locale. This must also run when
-            // the requested locale is the app's own default, otherwise content that
-            // only exists in the fallback locale is silently dropped.
-            if (!$block && $fallback) {
-                $fallbackLocale = config('app.fallback_locale', 'en');
+        // Fallback to the configured fallback locale. This must also run when
+        // the requested locale is the app's own default, otherwise content that
+        // only exists in the fallback locale is silently dropped.
+        if (!$block && $fallback) {
+            $fallbackLocale = config('app.fallback_locale', 'en');
 
-                if ($fallbackLocale !== $locale) {
-                    $block = static::where('page', $page)
-                        ->where('section', $section)
-                        ->where('key', $key)
-                        ->where('locale', $fallbackLocale)
-                        ->first();
-                }
+            if ($fallbackLocale !== $locale) {
+                $block = $blocks[static::cacheKey($page, $section, $key, $fallbackLocale)] ?? null;
             }
+        }
 
-            if (!$block) {
-                return $default;
-            }
+        if (!$block) {
+            return $default;
+        }
 
-            return match ($block->type) {
-                'json' => json_decode($block->value, true),
-                'boolean' => (bool) $block->value,
-                default => $block->value,
-            };
-        });
+        return match ($block['type']) {
+            'json' => json_decode($block['value'], true),
+            'boolean' => (bool) $block['value'],
+            default => $block['value'],
+        };
+    }
+
+    protected static function cacheKey(string $page, string $section, string $key, string $locale): string
+    {
+        return "{$page}\0{$section}\0{$key}\0{$locale}";
+    }
+
+    protected static function allBlocks(): array
+    {
+        // FrankenPHP reuses the process between requests, so the snapshot must
+        // be tied to the current Request instance, not to the process lifetime.
+        $request = app()->bound('request') ? app('request') : null;
+        $requestId = $request ? spl_object_id($request) : 0;
+
+        if (static::$snapshotRequest !== $requestId) {
+            static::$allBlocks = null;
+            static::$snapshotRequest = $requestId;
+        }
+
+        if (static::$allBlocks !== null) {
+            return static::$allBlocks;
+        }
+
+        try {
+            static::$allBlocks = Cache::remember('content_blocks_all', 3600, function (): array {
+                return static::query()
+                    ->get(['page', 'section', 'key', 'locale', 'value', 'type'])
+                    ->mapWithKeys(static function (ContentBlock $block): array {
+                        return [
+                            static::cacheKey($block->page, $block->section, $block->key, $block->locale) => [
+                                'value' => $block->value,
+                                'type' => $block->type,
+                            ],
+                        ];
+                    })
+                    ->all();
+            });
+        } catch (\Throwable) {
+            static::$allBlocks = [];
+        }
+
+        return static::$allBlocks;
+    }
+
+    /** Reset the in-request copy and the shared cache after an edit. */
+    public static function flushCache(): void
+    {
+        static::$allBlocks = null;
+        Cache::forget('content_blocks_all');
     }
 
     /**
@@ -71,9 +118,7 @@ class ContentBlock extends Model
             ]
         );
 
-        // Clear cache (invalidate both fallback and non-fallback cache keys)
-        Cache::forget("content_block:{$page}:{$section}:{$key}:{$locale}:1");
-        Cache::forget("content_block:{$page}:{$section}:{$key}:{$locale}:0");
+        static::flushCache();
     }
 
     /**
@@ -149,11 +194,7 @@ class ContentBlock extends Model
      */
     public static function clearPageCache(string $page): void
     {
-        $blocks = static::where('page', $page)->get();
-        foreach ($blocks as $block) {
-            Cache::forget("content_block:{$block->page}:{$block->section}:{$block->key}:{$block->locale}:1");
-            Cache::forget("content_block:{$block->page}:{$block->section}:{$block->key}:{$block->locale}:0");
-        }
+        static::flushCache();
     }
 
     /**

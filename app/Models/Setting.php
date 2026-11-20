@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class Setting extends Model
 {
@@ -12,20 +13,68 @@ class Setting extends Model
         'value' => 'string',
     ];
 
+    /** All settings for the current request, keyed by setting key. */
+    private static ?array $allSettings = null;
+
+    private static ?int $snapshotRequest = null;
+
     public static function get(string $key, mixed $default = null): mixed
     {
         try {
-            $setting = static::where('key', $key)->first();
-            if (!$setting) return $default;
+            $settings = static::allSettings();
 
-            return match ($setting->type) {
-                'boolean' => (bool) $setting->value,
-                'json' => json_decode($setting->value, true),
-                default => $setting->value,
+            if (!array_key_exists($key, $settings)) {
+                return $default;
+            }
+
+            $setting = $settings[$key];
+
+            return match ($setting['type']) {
+                'boolean' => (bool) $setting['value'],
+                'json' => json_decode($setting['value'], true),
+                default => $setting['value'],
             };
         } catch (\Throwable) {
             return $default;
         }
+    }
+
+    protected static function allSettings(): array
+    {
+        $request = app()->bound('request') ? app('request') : null;
+        $requestId = $request ? spl_object_id($request) : 0;
+
+        if (static::$snapshotRequest !== $requestId) {
+            static::$allSettings = null;
+            static::$snapshotRequest = $requestId;
+        }
+
+        if (static::$allSettings !== null) {
+            return static::$allSettings;
+        }
+
+        static::$allSettings = Cache::remember('settings_all', 3600, static function (): array {
+            return static::query()
+                ->get(['key', 'value', 'type'])
+                ->mapWithKeys(static function (Setting $setting): array {
+                    return [
+                        $setting->key => [
+                            'value' => $setting->value,
+                            'type' => $setting->type,
+                        ],
+                    ];
+                })
+                ->all();
+        });
+
+        return static::$allSettings;
+    }
+
+    /** Reset the in-request copy and the shared cache after an edit. */
+    public static function flushCache(): void
+    {
+        static::$allSettings = null;
+        Cache::forget('settings_all');
     }
 
     public static function safeGet(string $key, mixed $default = null): mixed
@@ -44,19 +93,21 @@ class Setting extends Model
     public static function getMany(array $keys, mixed $default = null): array
     {
         try {
-            $settings = static::whereIn('key', $keys)
-                ->get()
-                ->keyBy('key');
-
+            $all = static::allSettings();
             $result = [];
+
             foreach ($keys as $key) {
-                $result[$key] = $settings->has($key)
-                    ? match ($settings[$key]->type) {
-                        'boolean' => (bool) $settings[$key]->value,
-                        'json' => json_decode($settings[$key]->value, true),
-                        default => $settings[$key]->value,
-                    }
-                    : $default;
+                if (!array_key_exists($key, $all)) {
+                    $result[$key] = $default;
+                    continue;
+                }
+
+                $setting = $all[$key];
+                $result[$key] = match ($setting['type']) {
+                    'boolean' => (bool) $setting['value'],
+                    'json' => json_decode($setting['value'], true),
+                    default => $setting['value'],
+                };
             }
 
             return $result;
@@ -107,6 +158,8 @@ class Setting extends Model
                 'group' => $group,
             ]
         );
+
+        static::flushCache();
     }
 
     public static function safeSet(string $key, mixed $value, string $type = 'text', string $group = 'general'): bool

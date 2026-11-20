@@ -1,12 +1,11 @@
 FROM dunglas/frankenphp:1-php8.4-bookworm AS base
 
-# Extensions required by Laravel 11, Filament, Spatie Media Library and
-# turso/libsql (FFI is mandatory for the libSQL adapter).
+# Extensions required by Laravel 11, Filament, Spatie Media Library and the
+# HTTP libSQL client (sqlite3 is used for value escaping).
 RUN cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" \
     && install-php-extensions \
         bcmath \
         exif \
-        ffi \
         gd \
         intl \
         mbstring \
@@ -14,7 +13,7 @@ RUN cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" \
         pdo_sqlite \
         sqlite3 \
         zip \
-    && printf 'ffi.enable=true\nupload_max_filesize=64M\npost_max_size=64M\nmemory_limit=512M\n' \
+    && printf 'upload_max_filesize=64M\npost_max_size=64M\nmemory_limit=512M\nmax_execution_time=120\n' \
         > "$PHP_INI_DIR/conf.d/zz-costa-resin.ini"
 
 WORKDIR /app

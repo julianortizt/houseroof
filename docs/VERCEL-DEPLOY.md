@@ -17,7 +17,7 @@ usa estos servicios externos:
 
 ## 1. Requisitos locales
 
-- PHP **8.4.1+** con extensiones `ffi`, `zip`, `exif`, `intl`, `gd`, `pdo_sqlite`
+- PHP **8.4.1+** con extensiones `curl`, `zip`, `exif`, `intl`, `gd`, `pdo_sqlite`, `sqlite3`
   (en esta máquina ya está instalado en
   `C:\Users\Julian\AppData\Local\Microsoft\WinGet\Packages\PHP.PHP.8.4_Microsoft.Winget.Source_8wekyb3d8bbwe\php.exe`).
 - Usa `dev.bat` para arrancar el servidor local con PHP 8.4. Si lanzas
@@ -113,10 +113,10 @@ php artisan db:seed --class=SettingsSeeder --force
 php artisan db:seed --class=ContentBlockSeeder --force
 ```
 
-> Cada admin se siembra en un proceso aparte porque el driver FFI de libSQL
-> puede fallar al encadenar varios `syncRoles`. Las credenciales iniciales
-> están en `docs/CREDENCIALES.md` (ignorado por Git) y deben cambiarse tras
-> el primer login.
+> Cada admin se siembra en un proceso aparte para evitar transacciones
+> largas sobre Turso. Las credenciales iniciales están en
+> `docs/CREDENCIALES.md` (ignorado por Git) y deben cambiarse tras el primer
+> login.
 
 Tras esto, las tablas `sessions` y `cache` existen en Turso y el login del
 panel funciona entre instancias.
@@ -153,7 +153,11 @@ Vercel despliega desde GitHub. Repositorio:
 `https://github.com/julianortizt/houseroof` (rama `main`).
 
 No versionar `php.ini` con rutas de Windows: se copiaba al contenedor y
-desactivaba la extensión FFI necesaria para libSQL/Turso.
+sobrescribía la configuración PHP de FrankenPHP.
+
+Turso se consulta por HTTP (no por FFI) para evitar `SIGSEGV` en
+FrankenPHP. Tras cambiar de driver, ejecuta una vez `php artisan cache:clear`
+contra Turso: las entradas antiguas están serializadas en otro formato.
 
 ---
 

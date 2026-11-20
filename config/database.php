@@ -14,13 +14,14 @@ return [
             'journal_mode' => null,
             'synchronous' => null,
         ],
-        // Turso / libSQL (Vercel Marketplace). The libsql driver reads the
-        // remote URL from "database" and the auth token from "password".
+        // Turso / libSQL over HTTP. This avoids the native FFI client, which
+        // is not thread-safe under FrankenPHP. The package expects the remote
+        // URL in "url" and the auth token in "authToken".
         'libsql' => [
             'driver' => 'libsql',
-            'url' => env('TURSO_DATABASE_URL'),
-            'database' => env('TURSO_DATABASE_URL'),
-            'password' => env('TURSO_AUTH_TOKEN'),
+            'url' => env('DB_DATABASE', env('TURSO_DATABASE_URL')),
+            'authToken' => env('DB_AUTH_TOKEN', env('TURSO_AUTH_TOKEN')),
+            'database' => null,
             'prefix' => '',
         ],
         'mysql' => [

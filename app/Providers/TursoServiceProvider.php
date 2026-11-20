@@ -2,43 +2,34 @@
 
 namespace App\Providers;
 
+use App\Database\LibSQLHttpConnection;
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Support\ServiceProvider;
-use Libsql\Laravel\LibsqlConnection;
-use Libsql\PDO as LibsqlPDO;
+use Turso\Http\Laravel\Database\LibSQLDatabase;
 
 /**
- * Registers the libSQL connection without replacing Laravel's global PDO
- * factory (the upstream provider does that unconditionally, which breaks
- * every other driver). Only loaded when DB_CONNECTION=libsql.
+ * Registers the libSQL HTTP connection only when Turso is the configured
+ * database. The upstream package replaces Laravel's global db.factory for
+ * every driver, so discovery is disabled and this provider is used instead.
+ *
+ * Using HTTP avoids the native FFI client, which segfaults under FrankenPHP.
  */
 class TursoServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
         $this->app->resolving('db', function (DatabaseManager $db): void {
-            $db->extend('libsql', function (array $config, string $name): LibsqlConnection {
+            $db->extend('libsql', function (array $config, string $name): LibSQLHttpConnection {
                 $config = array_merge(config('database.connections.libsql', []), $config);
                 $config['name'] = $name;
 
-                return new LibsqlConnection(
-                    static function () use ($config): LibsqlPDO {
-                        // libSQL expects the remote URL in options['url']; passing
-                        // it as the DSN makes the native client treat it as a
-                        // local file path. Keep a plain path only for local files.
-                        $dsn = $config['database'] ?? null;
-                        if (is_string($dsn) && preg_match('#^(libsql|https?)://#i', $dsn)) {
-                            $dsn = null;
-                        }
+                $database = new LibSQLDatabase($config);
 
-                        return new LibsqlPDO(
-                            $dsn,
-                            password: $config['password'] ?? null,
-                            options: $config,
-                        );
-                    },
-                    database: $config['database'] ?? '',
-                    config: $config,
+                return new LibSQLHttpConnection(
+                    $database,
+                    (string) ($config['database'] ?? ':memory:'),
+                    (string) ($config['prefix'] ?? ''),
+                    $config,
                 );
             });
         });

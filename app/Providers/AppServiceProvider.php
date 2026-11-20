@@ -20,6 +20,28 @@ class AppServiceProvider extends ServiceProvider
         // Laravel's global PDO factory unconditionally.
         if (config('database.default') === 'libsql') {
             $this->app->register(TursoServiceProvider::class);
+
+            $this->app->afterResolving('cache', function ($cache): void {
+                $cache->extend('database', function ($app, array $config) {
+                    $connection = $app['db']->connection($config['connection'] ?? null);
+
+                    $store = new \App\Cache\LibSQLDatabaseStore(
+                        $connection,
+                        $config['table'] ?? 'cache',
+                        $config['prefix'] ?? $app['config']['cache.prefix'] ?? 'laravel_cache',
+                        $config['lock_table'] ?? 'cache_locks',
+                        $config['lock_lottery'] ?? [2, 100],
+                        $config['lock_timeout'] ?? 86400,
+                    );
+
+                    return $this->repository(
+                        $store->setLockConnection(
+                            $app['db']->connection($config['lock_connection'] ?? $config['connection'] ?? null)
+                        ),
+                        $config
+                    );
+                });
+            });
         }
 
         // Register AI Assistant Service as singleton

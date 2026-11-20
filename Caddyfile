@@ -1,13 +1,3 @@
-{
-    frankenphp {
-        # libSQL's FFI client is not thread-safe. Keep one PHP thread and
-        # recycle it often so native state cannot accumulate between requests.
-        num_threads 1
-        max_threads 1
-        max_requests 10
-    }
-}
-
 :{$PORT:80} {
     root * /app/public
     encode zstd gzip
