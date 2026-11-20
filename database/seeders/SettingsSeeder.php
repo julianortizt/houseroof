@@ -40,6 +40,12 @@ class SettingsSeeder extends Seeder
         ];
 
         foreach ($settings as $setting) {
+            // libSQL's FFI driver aborts on empty-string inserts. Optional
+            // credentials/social URLs are read with a fallback, so omit them.
+            if ($setting['value'] === '') {
+                continue;
+            }
+
             Setting::updateOrCreate(['key' => $setting['key']], $setting);
         }
     }
