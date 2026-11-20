@@ -23,8 +23,16 @@ class TursoServiceProvider extends ServiceProvider
 
                 return new LibsqlConnection(
                     static function () use ($config): LibsqlPDO {
+                        // libSQL expects the remote URL in options['url']; passing
+                        // it as the DSN makes the native client treat it as a
+                        // local file path. Keep a plain path only for local files.
+                        $dsn = $config['database'] ?? null;
+                        if (is_string($dsn) && preg_match('#^(libsql|https?)://#i', $dsn)) {
+                            $dsn = null;
+                        }
+
                         return new LibsqlPDO(
-                            $config['database'] ?? null,
+                            $dsn,
                             password: $config['password'] ?? null,
                             options: $config,
                         );

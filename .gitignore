@@ -50,7 +50,10 @@ storage/framework/*.sqlite*
 
 # Artefactos temporales
 storage/app/livewire-tmp/
+storage/framework/testing/disks/public/
 temp_html.txt
 
 # Credenciales locales reales (nunca a git)
 docs/CREDENCIALES.md
+
+.vercel

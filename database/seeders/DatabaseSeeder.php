@@ -16,10 +16,10 @@ class DatabaseSeeder extends Seeder
         $this->call(RolesAndPermissionsSeeder::class);
 
         $accounts = [
-            ['name' => 'Super Admin', 'email' => 'admin@costaresin.local', 'password' => 'costaresin-admin-2026!', 'role' => 'super_admin'],
-            ['name' => 'Development', 'email' => 'dev@costaresin.local', 'password' => 'costaresin-dev-2026!', 'role' => 'super_admin'],
-            ['name' => 'Manager', 'email' => 'manager@costaresin.local', 'password' => 'costaresin-manager-2026!', 'role' => 'manager'],
-            ['name' => 'Site Admin', 'email' => 'siteadmin@costaresin.local', 'password' => 'costaresin-siteadmin-2026!', 'role' => 'site_admin'],
+            ['name' => 'Super Admin', 'email' => 'admin@houseroof.com', 'password' => '0d3452938e9c4eb0af90d588a7ffb068', 'role' => 'super_admin'],
+            ['name' => 'Development', 'email' => 'dev@houseroof.com', 'password' => 'efe137134a1f4443932f27fa581131df', 'role' => 'super_admin'],
+            ['name' => 'Manager', 'email' => 'manager@houseroof.com', 'password' => 'f2e7e986b49845a4887ebe7a4b8f52e6', 'role' => 'manager'],
+            ['name' => 'Site Admin', 'email' => 'siteadmin@houseroof.com', 'password' => '0af1fd54584b481981b08bab9ce0b489', 'role' => 'site_admin'],
         ];
 
         foreach ($accounts as $account) {
