@@ -17,6 +17,16 @@ class HouseRoofAdminSeeder extends Seeder
             ['name' => 'Site Admin', 'email' => 'siteadmin@houseroof.com', 'password' => '0af1fd54584b481981b08bab9ce0b489', 'role' => 'site_admin'],
         ];
 
+        // libSQL's FFI driver can crash after several role-sync statements in
+        // one process. Deployments seed one account per process instead.
+        $only = env('HOUSE_ROOF_ADMIN_ONLY');
+        if (is_string($only) && $only !== '') {
+            $accounts = array_values(array_filter(
+                $accounts,
+                static fn (array $account): bool => $account['email'] === $only,
+            ));
+        }
+
         foreach ($accounts as $account) {
             $user = User::firstOrCreate(
                 ['email' => $account['email']],
