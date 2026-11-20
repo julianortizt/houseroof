@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\URL;
 
 use App\Models\ContentBlock;
 use App\Models\Quote;
@@ -62,6 +63,14 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        // Behind Vercel / FrankenPHP the incoming request scheme can be seen as
+        // HTTP, which makes asset()/Vite emit http:// URLs on an HTTPS page.
+        // Browsers block those as mixed content, leaving the site unstyled.
+        // A canonical HTTPS APP_URL is the source of truth for the public site.
+        if (str_starts_with((string) config('app.url'), 'https://')) {
+            URL::forceScheme('https');
+        }
+
         // Use simple pagination (works without JS)
         Paginator::useBootstrapFive();
 
