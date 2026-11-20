@@ -56,9 +56,9 @@ class SimulatorSeeder extends Seeder
         }
 
         // --- Finishes ---
-        $chips = Finish::create(['name' => 'Resina con chips de granito', 'type' => 'chips', 'price_per_m2' => 49.90, 'currency' => 'EUR', 'is_active' => true, 'sort_order' => 1]);
-        $solid = Finish::create(['name' => 'Resina sólida epoxi', 'type' => 'solid', 'price_per_m2' => 39.90, 'currency' => 'EUR', 'is_active' => true, 'sort_order' => 2]);
-        $metal = Finish::create(['name' => 'Resina metálica', 'type' => 'metallic', 'price_per_m2' => 59.90, 'currency' => 'EUR', 'is_active' => true, 'sort_order' => 3]);
+        $chips = Finish::create(['name' => 'Recubrimiento antideslizante para teja', 'type' => 'chips', 'price_per_m2' => 49.90, 'currency' => 'EUR', 'is_active' => true, 'sort_order' => 1]);
+        $solid = Finish::create(['name' => 'Impermeabilización elástica', 'type' => 'solid', 'price_per_m2' => 39.90, 'currency' => 'EUR', 'is_active' => true, 'sort_order' => 2]);
+        $metal = Finish::create(['name' => 'Acabado reflectante metálico', 'type' => 'metallic', 'price_per_m2' => 59.90, 'currency' => 'EUR', 'is_active' => true, 'sort_order' => 3]);
 
         // --- Variants for Chips ---
         $chipVariants = [
