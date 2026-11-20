@@ -53,6 +53,9 @@ storage/app/livewire-tmp/
 storage/framework/testing/disks/public/
 temp_html.txt
 
+# Configuración local de PHP (nunca al contenedor)
+php.ini
+
 # Credenciales locales reales (nunca a git)
 docs/CREDENCIALES.md
 
