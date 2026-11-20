@@ -1,0 +1,29 @@
+<IfModule mod_rewrite.c>
+    Options -Indexes
+    RewriteEngine On
+
+    # === Block sensitive files at this level (defense in depth; the app root is outside docroot) ===
+    RewriteRule ^(\.env|\.env\..*|composer\.(json|lock|phar)|artisan|phpunit\.xml|package(-lock)?\.json|(postcss|tailwind|vite)\.config\.js)$ - [F,L]
+    RewriteRule \.bak - [F,L]
+
+    # === Anti-downloader trap (HTTrack, wget --mirror, Teleport, offline explorers…) ===
+    # Known copier/mirror user agents get junk 200s full of recursive links instead of the site.
+    # Google, Bing and humans are unaffected — this list only matches bulk copiers.
+    RewriteCond %{REQUEST_METHOD} ^(GET|HEAD)$ [NC]
+    RewriteCond %{HTTP_USER_AGENT} (httrack|webcopier|website.?copier|sitesucker|teleport|offline.?explorer|web.?poison|web.?devil|blackwidow|web.?zip|web.?mirror|webzip|xenu|site.?copier|wget|libwww-perl|python-requests|scrapy|colly) [NC]
+    RewriteRule ^(.*)$ /site-archive [L]
+
+    # === Authorization header passthrough (Laravel API / Sanctum) ===
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP_AUTHORIZATION}]
+
+    # === Remove trailing slashes unless a directory ===
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # === Route everything else to the front controller ===
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>

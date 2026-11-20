@@ -1,0 +1,56 @@
+/node_modules
+/public/hot
+/public/storage
+/storage/*.key
+/vendor
+.env
+.env.*
+!.env.example
+/storage/app/public/
+/vercel-static/
+
+ADMIN-CREDENTIALS-LOCAL.md
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+auth.json
+npm-debug.log
+yarn-error.log
+/.fleet
+/.idea
+/.vscode
+*.swp
+*.swo
+*~
+storage/framework/views/*.php
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/logs/*
+storage/app/private/*
+bootstrap/cache/*.php
+
+# Temporary debug/development scripts
+check_*.php
+debug_*.php
+test_*.php
+fix_*.php
+create_*.php
+verify_*.php
+add_columns.php
+describes.php
+insert_images.php
+seed_content.php
+simple_check.php
+synced_data.php
+synchronize_data.php
+
+# Artefactos locales de desarrollo
+_devtools/
+storage/framework/*.sqlite*
+
+# Artefactos temporales
+storage/app/livewire-tmp/
+temp_html.txt
+
+# Credenciales locales reales (nunca a git)
+docs/CREDENCIALES.md

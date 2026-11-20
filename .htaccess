@@ -1,0 +1,41 @@
+<IfModule mod_rewrite.c>
+    Options -Indexes
+    RewriteEngine On
+
+    # === Block internal application folders (whole tree) ===
+    RewriteRule ^(app|bootstrap|config|config\.bak[^/]*|database|resources|routes|vendor|_devtools|__deploy_bak|__upload_tmp__|\.git|node_modules|lang|tests|public)(/|$) - [F,L]
+    RewriteRule ^storage/(framework|logs|clock|testing)(/|$) - [F,L]
+    RewriteRule ^storage/app/(?!public/) - [F,L]
+
+    # === Block sensitive files wherever they appear ===
+    RewriteRule ^(\.env|\.env\..*|composer\.(json|lock|phar)|php\.ini|artisan|server\.php|\.gitignore|\.htaccess|\.installed|\.phpunit\.result\.cache|package(-lock)?\.json|phpunit\.xml|(postcss|tailwind|vite)\.config\.js)$ - [F,L]
+    RewriteRule \.bak - [F,L]
+    RewriteRule \.(md|markdown|log|sh|py|sql|sqlite|sqlite3|phar|ini)$ - [F,L]
+
+    # Text files are not public, except robots.txt
+    RewriteCond %{REQUEST_URI} !^/robots\.txt$ [NC]
+    RewriteRule \.txt$ - [F,L]
+
+    # === Anti-downloader trap (HTTrack, wget --mirror, Teleport, offline explorers…) ===
+    # Known copier/mirror user agents get junk 200s full of recursive links instead of the site.
+    # Humans (and Google, Bing, etc.) are unaffected — this list only matches bulk copiers.
+    # Remove this block (or stop blocking the monitor IPs you use) if a legitimate tool breaks.
+    RewriteCond %{REQUEST_METHOD} ^(GET|HEAD)$ [NC]
+    RewriteCond %{HTTP_USER_AGENT} (httrack|webcopier|website.?copier|sitesucker|teleport|offline.?explorer|web.?poison|web.?devil|blackwidow|web.?zip|web.?mirror|webzip|xenu|site.?copier|wget|libwww-perl|python-requests|scrapy|colly) [NC]
+    RewriteRule ^(.*)$ /index.php/site-archive [L]
+
+    # Public storage rewrite (unchanged)
+    RewriteCond %{REQUEST_URI} !^/storage/app/public/
+    RewriteRule ^storage/(.*)$ storage/app/public/$1 [L]
+
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP_AUTHORIZATION}]
+
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>

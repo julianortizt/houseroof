@@ -1,0 +1,36 @@
+# robots.txt for Costa Resin & Construction
+# https://TU_DOMINIO.com
+
+User-agent: *
+Allow: /
+
+# Disallow admin panel
+Disallow: /admin/
+Disallow: /filament/
+
+# Disallow API endpoints
+Disallow: /livewire/
+Disallow: /api/
+
+# Disallow cart and checkout (no index)
+Disallow: /carrito
+Disallow: /checkout
+
+# Disallow maintenance mode
+Disallow: /up
+
+# Sitemap
+Sitemap: https://TU_DOMINIO.com/sitemap.xml
+
+# Crawl-delay for polite bots
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: MJ12bot
+Crawl-delay: 10
+
+User-agent: DotBot
+Crawl-delay: 10
+
+# Trap for site copiers/downloaders
+Disallow: /site-archive
